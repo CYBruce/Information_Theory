@@ -1,0 +1,249 @@
+% Homework template for Information Theory and Statistical Learning
+% by Xiangxiang Xu <xiangxiangxu.thu@gmail.com>
+% LAST UPDATE: Oct 3, 2019
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+% amsmath: equation*, amssymb: mathbb, amsthm: proof
+\usepackage{moreenum}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs} % toprule
+\usepackage[mathcal]{eucal}
+\usepackage{dsfont}
+\usepackage[numbered,framed]{matlab-prettifier}
+\input{itdef}
+
+\lstset{
+  style              = Matlab-editor,
+  captionpos         =b,
+  basicstyle         = \mlttfamily,
+  escapechar         = ",
+  mlshowsectionrules = true,
+}
+\begin{document}
+\courseheader
+
+
+
+\newcounter{hwcnt}
+\setcounter{hwcnt}{1} % set to the times of Homework
+
+\begin{center}
+  \underline{\bf Homework \thehwcnt} \\
+\end{center}
+\begin{flushleft}
+  \textcolor{gray}{Chenyu Tian}\hfill
+  \today
+\end{flushleft}
+\hrule
+
+\vspace{2em}
+\setlist[enumerate,1]{label=\thehwcnt.\arabic*.}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[enumerate,3]{label=\roman*.}
+\setlist[enumerate,4]{label=\greek*)}
+
+\flushleft
+\rule{\textwidth}{1pt}
+\begin{itemize}
+\item {\bf Acknowledgments: \/} 
+  \textcolor{gray}{This template takes some materials from course CSE 547/Stat 548 of Washington University: \small{\url{https://courses.cs.washington.edu/courses/cse547/17sp/index.html}}.}
+
+%   \textcolor{red}{If you refer to other materials in your homework, please list here.}
+% \item {\bf Collaborators: \/}
+%   \textcolor{gray}{I finish this template by myself.} \textcolor{red}{If you finish your homework all by yourself, make a similar statement. If you get help from others in finishing your homework, state like this:}
+%   \textcolor{gray}{
+%   \begin{itemize}
+%   \item 1.2 (b) was solved with the help from \underline{\hspace{3em}}.
+%   \item Discussion with \underline{\hspace{3em}} helped me finishing 1.3.
+%   \end{itemize}
+% }
+\item  \emph{I certify that all solutions are entirely in my words and that I have not looked at another student's solutions. I have credited all external sources in this write up.}
+  %\framebox[\linewidth]{\rule{0pt}{10pt}\textcolor{gray}{\large Your signature}}
+\end{itemize}
+\rule{\textwidth}{1pt}
+
+
+\vspace{2em}
+
+\begin{enumerate}
+  \setlength{\itemsep}{3\parskip}
+
+\item
+  \begin{enumerate}
+    \item 
+    \begin{enumerate}
+        \item 
+        \begin{equation*}
+            \begin{align*}
+                \E[\E[\rvx|\rvy \rvz]|\rvy] = & \E((\sum_{i} x_i P(\rvx=x_i| \rvy \rvz))|\rvy)\\
+                =&\sum_j (\sum_{i} x_i P(\rvx=x_i|\rvy,\rvz=z_j))P(\rvz=z_j) \\
+                =&\sum_i x_i(\sum_{j}P(\rvx=x_i| \rvy,\rvz=z_j)P(\rvz=z_j)) \\
+                =&\sum_i x_i P(\rvx=x_i| \rvy) \\
+                =&\E(\rvx|\rvy)
+            \end{align*}
+        \end{equation*}
+        \item
+        \begin{equation*}
+             g(\rvy)\E[\rvx|\rvy]=\sum_{i} g(\rvy)x_i\Pr(\rvx=x_i|\rvy)=\E[xg(\rvy)|\rvy]
+        \end{equation*}
+        
+        \item
+        \begin{equation*}
+            \begin{align*}
+            \E[\rvx\E[\rvx|\rvy]]=&\E\left[\rvx\sum_{i} x_i\Pr(\rvx=x_i|\rvy)\right]\\
+            =&\sum_{j,k}(x_j\sum_{i} x_i\Pr(\rvx=x_i|\rvy=y_k))\Pr(\rvx=x_j,\rvy=y_k)\\
+            =&\sum_{i,j,k} x_i x_j \Pr(\rvx=x_i|\rvy=y_k)\Pr(\rvx=x_j,\rvy=y_k)
+        \end{align*}
+        \end{equation*}
+        \begin{equation*}
+            \begin{align*}
+        \E[(\E[\rvx|\rvy])^2]=&\E\left[(\sum_{i} x_i\Pr(\rvx=x_i|\rvy))^2\right]\\
+        =&\sum_{k}(\sum_{i} x_i\Pr(\rvx=x_i|\rvy=y_k))^2 \Pr(\rvy=y_k)\\
+        =&\sum_{i,j,k} x_i x_j\Pr(\rvx=x_i|\rvy=y_k)\Pr(\rvx=x_j|\rvy=y_k)\Pr(\rvy=y_k)\\
+        =&\sum_{i,j,k} x_i x_j\Pr(\rvx=x_i|\rvy=y_k)\Pr(\rvx=x_j,\rvy=y_k)
+        \end{align*}
+        \end{equation*}
+        Thus, $\E[(\E[\rvx|\rvy])^2]=\E[\rvx\E[\rvx|\rvy]]$.
+        
+        \item
+        \begin{equation*}
+            \begin{align*}
+                & \mathbb{E}[\operatorname{Var}(\mathrm{x} \mid \mathrm{y})]+\operatorname{Var}(\mathbb{E}[\mathrm{x} \mid \mathrm{y}])\\
+                =& \E[\E[\rvx^2|\rvy] - (\E[\rvx|\rvy])^2] + \E[(\E[\rvx|\rvy])^2] - (\E[\E[\rvx|\rvy]])^2\\
+                =& \E[\E[\rvx^2|\rvy]] - (\E[\E[\rvx|\rvy]])^2\\
+                =& \E[\rvx^2] - (\E[\rvx])^2\\
+                =& \operatorname{Var}(\mathrm{x})
+            \end{align*}
+        \end{equation*}
+        Thus, $\operatorname{Var}(\mathrm{x})=\mathbb{E}[\operatorname{Var}(\mathrm{x} \mid \mathrm{y})]+\operatorname{Var}(\mathbb{E}[\mathrm{x} \mid \mathrm{y}])$.
+    \end{enumerate}
+    \item
+    % 1.(b)
+    \begin{enumerate}
+        \item 
+        \begin{equation*}
+            \begin{align*}
+        \cov(\underline{x}) = & \E[(\underline{x}-\E[\underline{x}])(\underline{x}-\E[\underline{x}])^\T] \\    
+                    = & \E[\underline{x}\underline{x}^\T]-\E[\underline{x}]\E[\underline{x}]^\T\\
+                    = & \E[\E[\underline{x}\underline{x}^\T|\rvy]]-\E[\E[\underline{x}|\rvy]]\E[\E[\underline{x}|\rvy]]^\T\\
+                    = & \E[\Cov[\underline{x}|\rvy]+\E[\underline{x}|\rvy]\E[\underline{x}|\rvy]^\T]-\E[\E[\underline{x}|\rvy]]\E[\E[\underline{x}|\rvy]]^\T\\
+                    = & \E[\Cov[\underline{x}|\rvy]]+\E[\E[\underline{x}|\rvy]\E[\underline{x}|\rvy]^\T]-\E[\E[\underline{x}|\rvy]]\E[\E[\underline{x}|\rvy]]^\T\\
+                    = & \E[\Cov[\underline{x}|\rvy]]+\Cov[\E[\underline{x}|\rvy]]\\       
+        \end{align*}
+        \end{equation*}
+        
+        \item
+        If $\exists \underline{c} \in \mathbb{R}^{k}, c \neq \underline{0}$, $\underline{c}^\T \underline{x} =d$ and $d$ is a constant. $\underline{c}^\T\E[\underline{x}]=d$ Then $\underline{c}^\T \underline{x}\underline{x}^\T\underline{c} =d^2$. Also, $\underline{c}^\T \E[\underline{x}\underline{x}^\T]\underline{c} =d^2$.
+        
+        \begin{equation*}
+            \begin{align*}
+        \underline{c}^\T \cov(\underline{x})\underline{c} = & \underline{c}^\T\E[\underline{x}\underline{x}^\T]\underline{c}-\underline{c}^\T\E[\underline{x}]\E[\underline{x}]^\T\underline{c}\\
+        = & \underline{c}^\T\E[\underline{x}\underline{x}^\T]\underline{c}-\underline{c}^\T\E[\underline{x}]\E[\underline{x}]^\T\underline{c}\\
+        = & 0
+        \end{align*}
+        \end{equation*}
+        And,
+        \begin{equation*}
+            \begin{align*}
+        \underline{c}^\T \cov(\underline{x})\underline{c} = & \underline{c}^\T\E[(\underline{x}-E[\underline{x}])(\underline{x}-E[\underline{x}])^\T]\underline{c}\\
+        =&\E[\underline{c}^\T(\underline{x}-E[\underline{x}])(\underline{x}-E[\underline{x}])^\T\underline{c}]\\
+        = & 0 \Longleftrightarrow (\underline{x}-E[\underline{x}])(\underline{x}-E[\underline{x}])^\T\underline{c} = \underline{0}
+        \end{align*}
+        \end{equation*}
+        It has $\operatorname{cov}(\underline{x})c=\underline{0}$. 
+        Thus, $\operatorname{det}(\operatorname{cov}(\underline{x}))=0$.
+        
+    \end{enumerate}
+  
+    \end{enumerate}
+  \item
+  \begin{enumerate}
+      % 1.2 a
+      \item 
+      \begin{equation*}
+      \E[(y-ax-b)^2]==a^2\E[x^2]+\E[y^2]+b^2-2a\E[xy]-2b\E[y]+2ab\E[x]
+      \end{equation*}
+      Take the derivatives with respect to $a$ and $b$ to find the minimum when the derivatives equal 0. It has
+      \begin{equation*}
+          \begin{align*}
+              a^{*}\E[x^2]+b^{*}\E[x]=&\E[xy]\\
+              a^{*}\E[x]+b^{*}=&\E[y]\\
+          \end{align*}
+      \end{equation*}
+      Considering $\var(x)=\var(y)=\sqrt{\var(x)\var(y)}$, it has $a^{*}=\frac{\E[xy]-\E[x]\E[y]}{\var(x)}=\rho(x,y)$.
+      % 1.2 b
+      \item
+      If $x \perp y$, 
+      \begin{equation*}
+          \begin{align*}
+          \E[f(x)g(y)]=&\sum_{i,j}f(x_i)g(y_j)\Pr(x=x_i,y=y_j)\\
+          =&\sum_{i,j}f(x_i)g(y_j)\Pr(x=x_i)\Pr(y=y_j)\\
+          =&\left(\sum_{i}f(x_i)\Pr(x=x_i)\right)\left(\sum_{i}g(y_j)\Pr(y=x_j)\right)\\
+          =&\E[f(x)]\E[g(y)]
+          \end{align*}
+      \end{equation*}
+      \begin{equation*}
+          \begin{align*}
+          \rho(g(y), g(y))=&\frac{\mathbb{E}[(f(x)-\mathbb{E}[f(x)])(g(y)-\mathbb{E}[g(y)])]}{\sqrt{\operatorname{var}(f(x)) \operatorname{var}(g(y))}}\\
+          =&\frac{\mathbb{E}[f(x)g(y)] - \mathbb{E}[f(x)] \mathbb{E}[g(y)]}{\sqrt{\operatorname{var}(f(x)) \operatorname{var}(g(y))}}\\
+          =&0
+          \end{align*}
+      \end{equation*}
+      So, $\forall f,g,\rho(f(x),g(y))=0$.
+      
+      On the other hand, if $\forall f,g,\rho(f(x),g(y))=0$. Let $f(x)=x,g(y)=y$. It exists
+      \begin{equation*}
+      \mathbb{E}[xy]=\mathbb{E}[x]\mathbb{E}[y] \Longleftrightarrow \Pr(x,y)=\Pr(x)\Pr(y)
+      \end{equation*}
+      So, $x \perp y$.
+  \end{enumerate}
+  % 1.3
+  \item Denote $y=exp(x)$. Because exp(x) is monotonically increasing, it has
+  \begin{equation*}
+      \begin{aligned} f_{Y}(y) &=\frac{\mathrm{d}}{\mathrm{d} y} \operatorname{Pr}(Y \leq y)=\frac{\mathrm{d}}{\mathrm{d} y} \operatorname{Pr}(\ln Y \leq \ln y)=\frac{\mathrm{d}}{\mathrm{d} y} \Phi\left(\ln y\right) 
+      \\ &=\frac{1}{\sqrt{2 \pi}} \exp \left(-\frac{(\ln y)^{2}}{2}\right) \frac{\mathrm{d} \ln y}{\mathrm{d} y}
+      \\ &=\frac{1}{y} \cdot \frac{1}{\sqrt{2 \pi}} \exp \left(-\frac{(\ln y)^{2}}{2}\right) \end{aligned}
+  \end{equation*}
+
+%   \item You may need to add figures and source codes in your homework. Figure \ref{fig:1} is an example that compares the empirical distribution (histogram) and probability density function of a Gaussian random variable.
+%     \begin{figure}[htbp]
+%       \centering
+%       \includegraphics[width = 0.8\textwidth]{pdf_normal.eps}
+%       \caption{Gaussian PDF and histogram of samples}
+%       \label{fig:1}
+%     \end{figure}
+
+%   The source code to plot Figure \ref{fig:1} could be found in Appendix \ref{sec:a:code}. Here are the core codes:
+%   \lstinputlisting[firstline=4,lastline=4, firstnumber=4]{matlabscript.m}
+%   \lstinputlisting[firstline=6,lastline=7, firstnumber=6]{matlabscript.m}
+%   To understand line 6, note that if we have $n$ samples of $X$ denoted by $x^{(i)}, i = 1, 2, \cdots, n$, then the probability density function $p_{X}$ can be estimated as
+%   \begin{equation*}
+%     \begin{aligned}
+%       p_{X}(x_0) &= \left.\frac{\mathrm{d}}{\mathrm{d}x} Pob(X \leq x) \right|_{x = x_0} \\
+%       &\approx \frac{Pob(x_0 - \Delta x < X \leq x_0)}{\Delta x}\\
+%       &\approx \frac{1}{n\Delta x} \sum_{i = 1}^n \1_{x^{(i)} \in (x_0 - \Delta x, x_0]}.
+%     \end{aligned}    
+%   \end{equation*}
+    
+\end{enumerate}
+  
+%   \newpage
+  
+%   \appendix
+%   \section{Source code}
+%   \label{sec:a:code}
+%   % \lstlistoflistings
+%   The source code for plotting Figure \ref{fig:1} is shown as follows.
+%   \lstinputlisting{matlabscript.m}
+  
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
